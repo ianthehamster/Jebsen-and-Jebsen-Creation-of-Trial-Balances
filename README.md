@@ -1,91 +1,99 @@
 # 🌍 Orbitax Trial Balance Generator for Jebsen & Jessen SAP Data
 
-This Excel Script automates the creation of Orbitax-ready Trial Balance files from Jebsen & Jessen’s SAP-exported Balance Sheet and Profit & Loss data. It is designed to streamline **Pillar Two data collection workflows** by transforming raw SAP financial data into structured `.qnr`-compatible trial balances for **GloBE Income Adjustments** and **Covered Taxes** inputs.
+This repository contains Excel Scripts that automate the generation of **Orbitax-ready Trial Balances** for Jebsen & Jessen’s Pillar Two reporting — aligned with GloBE Income and Covered Taxes QNR templates.
 
 ---
 
-## 📌 Features
+## ✨ Included Tools
 
-- ✅ **Converts SAP-format BS/PL data to Orbitax trial balance format**
-- 💱 **Converts local currency to SGD** using MAS & Wise exchange rates
-- 🔁 **Flips P&L signs** for specific account categories (e.g. revenue/expenses)
-- 🧾 **Handles missing account codes** by generating synthetic account codes
-- 🧠 **Maps J&J Entity Codes to Orbitax Entity Codes** based on master data
-- 🧮 **Creates two trial balance sheets**:
-  - `TB with Positive Tax Exp`: Tax expenses retained as-is
-  - `TB with Negative Tax Exp`: Tax expenses flipped to negative for Pillar Two QNR
+### 1. `Trial Balance from SAP Entity Tabs`
+**Creates Trial Balance worksheets** by transforming SAP-exported BS/PL data from each legal entity tab in the workbook.
+
+### 2. `Safe Harbour Consolidated Trial Balance`
+**Builds a consolidated trial balance** by extracting Safe Harbour key metrics (e.g., revenue, tax, PBT) from entity-level summary sheets such as `Tax GL`, `PL Info`, and `BS & Others`.
 
 ---
 
-## 📂 Input Requirements
+## 🧾 Tool 1: Trial Balance from SAP Entity Tabs
 
-The workbook must include the following sheets:
+### 💡 Features
+
+- 📥 Converts each sheet’s local currency to SGD
+- 🔁 Flips signs for revenue & expense accounts
+- 🧠 Maps J&J entities to Orbitax codes using a `General` sheet
+- 📊 Creates **2 versions** of the trial balance:
+  - `TB with Positive Tax Exp`
+  - `TB with Negative Tax Exp` (for GloBE Income QNR)
+
+### 📂 Input Requirements
 
 | Sheet Name | Purpose |
 |------------|---------|
-| `MAS and Wise Exchange Rates` | Currency codes in Row 10, exchange rates to SGD in Row 11 |
-| `General` | Contains entity mappings between J&J and Orbitax |
-| One sheet per legal entity | SAP-exported BS/PL data starting at Row 9 |
+| `MAS and Wise Exchange Rates` | Currency codes in Row 10, exchange rates in Row 11 |
+| `General` | Entity name mapping to Orbitax |
+| One sheet per legal entity | Data starts from Row 9, Column A |
 
----
-
-## 🧠 Logic Summary
-
-### 1. Currency Conversion
-Looks up the currency of each entity sheet, and applies the relevant exchange rate to all financial values (converting to SGD).
-
-### 2. Sign Flipping
-Flips the signs of accounts beginning with `4`, `5`, `6`, `7` unless the account is a tax expense (e.g. `73000`), in line with Pillar Two income treatment.
-
-### 3. Entity Code Mapping
-Maps each entity’s short name (from sheet name) to its Orbitax entity code and legal name using the `General` sheet.
-
-### 4. Tax Expense Handling
-- The **Positive** TB is used for standard reporting.
-- The **Negative** TB is used to populate **GloBE Income Adjustments**, where tax expenses must be input as negative values.
-
----
-
-## 📄 Output Sheets
-
-| Sheet Name | Description |
-|------------|-------------|
-| `TB with Positive Tax Exp` | Orbitax-ready TB with mapped entities and tax expenses intact |
-| `TB with Negative Tax Exp` | Identical to above but flips tax expenses to negative |
-
----
-
-## 📊 Output Format
+### 📝 Output Format
 
 | Entity Code | Entity Name | Account Code | Account Name | Amount (SGD) |
 |-------------|-------------|--------------|--------------|--------------|
-| 1050        | JJ Thailand | 40000        | Revenue      | -150000.00   |
 
 ---
 
-## 🛠️ How to Run
+## 🧾 Tool 2: Safe Harbour Consolidated Trial Balance
 
-This script is written in **Office Scripts** for Excel Online.
+### 💡 Features
 
-1. Open your Excel workbook in **Excel for Web** (with Office Scripts enabled).
+- 📋 Parses Safe Harbour metrics (Total Revenue, Tax Expense, Net Profit Before Tax, etc.) from 3 summary sheets:
+  - `Tax GL`
+  - `PL info`
+  - `BS & others`
+- 🔗 Auto-maps entity codes (e.g., `E99 - JJ Thailand`) to Orbitax codes using `Entity Codes and Names V2` mapping sheet
+- ✅ Assigns standardized account codes:
+  - `40000` – Total Revenue
+  - `72000` – Tax Expense
+  - `72001` – Tax Expense (Current)
+  - `90000` – Net Profit Before Tax
+  - All other metrics: dynamic codes from 1001+
+
+### 📂 Input Requirements
+
+| Sheet Name | Purpose |
+|------------|---------|
+| `Tax GL`, `PL info`, `BS & others` | Safe Harbour metric tables |
+| `Entity Codes and Names V2` | Maps J&J entity codes to Orbitax |
+
+### 📤 Output Sheet
+
+- `Consolidated Trial Balance` – Clean, Orbitax-ready trial balance for Safe Harbour computations
+
+---
+
+## 🚀 How to Use
+
+1. Open Excel Online with Office Scripts enabled.
 2. Click **Automate > New Script**.
-3. Paste the entire script.
-4. Run the script with the workbook containing the required inputs.
+3. Paste the relevant script from this repo.
+4. Run it on the workbook containing the SAP or Safe Harbour files.
+5. Two output sheets will be generated automatically.
 
 ---
 
-## 🧾 Notes
+## 📦 File Naming
 
-- Excludes sheets such as `"Steps"`, `"General"`, `"Orbitax Entity Codes"`, etc.
-- Automatically skips rows with no account codes.
-- Handles missing account codes by generating random numbers.
+- `TB with Positive Tax Exp` → Use for Covered Taxes QNR
+- `TB with Negative Tax Exp` → Use for GloBE Income Adjustments QNR
+- `Consolidated Trial Balance` → Use for Safe Harbour Testing
 
 ---
 
-## 📬 Contact
+## 🧠 Author
 
-Created by: **Ian Chow**  
-Team: Deloitte Tax Technology Consulting  
-Project: Jebsen & Jessen Pillar Two Implementation  
-Email: kichow@deloitte.com  
-© 2025 Deloitte Singapore  
+**Ian Chow**  
+Associate, Tax Technology Consulting  
+Deloitte Global Tax Center Asia  
+Email: `kichow@deloitte.com`
+
+---
+
+## © 2025 Deloitte Singapore
