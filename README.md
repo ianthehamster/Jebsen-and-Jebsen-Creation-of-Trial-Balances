@@ -18,7 +18,7 @@ This repository contains Excel Scripts that automate the generation of **Orbitax
 
 ### 💡 Features
 
-- 📥 Converts each sheet’s local currency to SGD
+- 📥 Converts each sheet’s local currency to SGD - Refer to MAS and Wise Exchange Rates .xlsx file for formatting reference
 - 🔁 Flips signs for revenue & expense accounts
 - 🧠 Maps J&J entities to Orbitax codes using a `General` sheet
 - 📊 Creates **2 versions** of the trial balance:
