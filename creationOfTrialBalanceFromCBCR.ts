@@ -132,7 +132,7 @@ function main(workbook: ExcelScript.Workbook) {
     }
 
     // Mapping from David's 2024 2 digit codes to the Orbitax entity codes
-    const davidChuaExcelFile = workbook.getWorksheet("Entity Codes and Names")
+    const davidChuaExcelFile = workbook.getWorksheet("Entity Codes and Names for CbCR")
     if (davidChuaExcelFile) {
         const jjGeneralTabValues = davidChuaExcelFile.getUsedRange().getValues()
 
