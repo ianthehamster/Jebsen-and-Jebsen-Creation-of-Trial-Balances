@@ -48,7 +48,7 @@ This repository contains Excel Scripts that automate the generation of **Orbitax
   - `Tax GL`
   - `PL info`
   - `BS & others`
-- 🔗 Auto-maps entity codes (e.g., `E99 - JJ Thailand`) to Orbitax codes using `Entity Codes and Names V2` mapping sheet
+- 🔗 Auto-maps entity codes (e.g., `E99 - JJ Thailand`) to Orbitax codes using `Entity Codes and Names for CbCR` mapping sheet
 - ✅ Assigns standardized account codes:
   - `40000` – Total Revenue
   - `72000` – Tax Expense
@@ -57,6 +57,8 @@ This repository contains Excel Scripts that automate the generation of **Orbitax
   - All other metrics: dynamic codes from 1001+
 
 ### 📂 Input Requirements
+
+Please attach the `Entity Codes and Names for CbCR` mapping sheet and ensure the sheet is named `Entity Codes and Names for CbCR`.
 
 | Sheet Name | Purpose |
 |------------|---------|
