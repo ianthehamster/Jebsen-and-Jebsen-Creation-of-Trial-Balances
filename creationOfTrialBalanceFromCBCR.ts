@@ -44,8 +44,6 @@ function main(workbook: ExcelScript.Workbook) {
             }
         }
 
-        console.log(accountNames)
-
         // 2. Locate "LGROUP - LEGAL RBU" row in column B
         let lgroupRow = -1;
         for (let r = 0; r < values.length; r++) {
@@ -112,7 +110,6 @@ function main(workbook: ExcelScript.Workbook) {
         }
     }
 
-    console.log(ctbData)
 
 
     // ---- Write buffered rows in safe chunks using getRangeByIndexes ----
@@ -150,7 +147,6 @@ function main(workbook: ExcelScript.Workbook) {
                 })
             }
         }
-        console.log(jjCodesToCbCR)
 
         const ctbValues = ctbSheet.getUsedRange().getValues()
 
