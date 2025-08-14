@@ -17,6 +17,8 @@ function main(workbook: ExcelScript.Workbook) {
     let outputRow = 2;
     let accountCodeSeed = 1001; // starting arbitrary code
     const safeHarborAccounts = ["Total Revenue", "Net Profit Before Tax", "Tax Expense", "Tax Expense-current"]
+    let ctbData: (string | number)[][] = []
+
 
     for (const name of sheetNames) {
         const sheet = workbook.getWorksheet(name);
@@ -54,6 +56,7 @@ function main(workbook: ExcelScript.Workbook) {
         }
         if (lgroupRow === -1) continue;
 
+
         // Entity rows start after skipping one row post "LGROUP"
         for (let r = lgroupRow + 2; r < values.length; r++) {
             const cellValue = values[r][1]; // Column B
@@ -68,7 +71,7 @@ function main(workbook: ExcelScript.Workbook) {
                 const accountName = accountNames[i];
                 const amount = values[r][3 + i] || 0; // amounts align under headers from column D onward
                 let accountCode: number
-              
+
 
                 switch (accountName) {
                     case "Total Revenue":
@@ -93,15 +96,39 @@ function main(workbook: ExcelScript.Workbook) {
                 }
 
                 // Write to Consolidated Trial Balance
-                ctbSheet.getCell(outputRow - 1, 0).setValue(entityCodeWithoutE);
-                ctbSheet.getCell(outputRow - 1, 1).setValue(entityName);
-                ctbSheet.getCell(outputRow - 1, 2).setValue(accountCode);
-                ctbSheet.getCell(outputRow - 1, 3).setValue(accountName);
-                ctbSheet.getCell(outputRow - 1, 4).setValue(amount);
+                // ctbSheet.getCell(outputRow - 1, 0).setValue(entityCodeWithoutE);
+                // ctbSheet.getCell(outputRow - 1, 1).setValue(entityName);
+                // ctbSheet.getCell(outputRow - 1, 2).setValue(accountCode);
+                // ctbSheet.getCell(outputRow - 1, 3).setValue(accountName);
+                // ctbSheet.getCell(outputRow - 1, 4).setValue(amount);
 
-                outputRow++;
+
+
+                // outputRow++;
+                ctbData.push([
+                    entityCodeWithoutE, entityName, accountCode, accountName, amount
+                ])
             }
         }
+    }
+
+    console.log(ctbData)
+
+
+    // ---- Write buffered rows in safe chunks using getRangeByIndexes ----
+    if (ctbData.length > 0) {
+        const COLS = 5;               // A..E
+        const START_ROW = 1;          // zero-based row index: 1 => A2
+        const CHUNK = 2000;           // tune if needed
+
+        for (let i = 0; i < ctbData.length; i += CHUNK) {
+            const rows = Math.min(CHUNK, ctbData.length - i);
+            const target = ctbSheet.getRangeByIndexes(START_ROW + i, 0, rows, COLS);
+            // slice is OK because setValues copies data, but we can clone if paranoid
+            target.setValues(ctbData.slice(i, i + rows));
+        }
+    } else {
+        console.log("No CTB rows produced. Check source sheets / markers.");
     }
 
     // Mapping from David's 2024 2 digit codes to the Orbitax entity codes
