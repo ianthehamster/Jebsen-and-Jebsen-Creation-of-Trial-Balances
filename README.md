@@ -87,15 +87,4 @@ Please attach the `Entity Codes and Names for CbCR` mapping sheet and ensure the
 - `TB with Negative Tax Exp` → Use for GloBE Income Adjustments QNR
 - `Consolidated Trial Balance` → Use for Safe Harbour Testing
 
----
 
-## 🧠 Author
-
-**Ian Chow**  
-Associate, Tax Technology Consulting  
-Deloitte Global Tax Center Asia  
-Email: `kichow@deloitte.com`
-
----
-
-## © 2025 Deloitte Singapore
