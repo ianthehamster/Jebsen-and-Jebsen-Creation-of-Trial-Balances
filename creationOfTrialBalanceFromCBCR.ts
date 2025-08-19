@@ -44,6 +44,7 @@ function main(workbook: ExcelScript.Workbook) {
             }
         }
 
+
         // 2. Locate "LGROUP - LEGAL RBU" row in column B
         let lgroupRow = -1;
         for (let r = 0; r < values.length; r++) {
@@ -88,21 +89,15 @@ function main(workbook: ExcelScript.Workbook) {
                         accountCode = 90000
                         break;
 
+                    case "Total Tangible Assets Excluding Cash":
+                        accountCode = 90001
+                        break;
+
                     default:
                         accountCode = accountCodeSeed++
                         break;
                 }
 
-                // Write to Consolidated Trial Balance
-                // ctbSheet.getCell(outputRow - 1, 0).setValue(entityCodeWithoutE);
-                // ctbSheet.getCell(outputRow - 1, 1).setValue(entityName);
-                // ctbSheet.getCell(outputRow - 1, 2).setValue(accountCode);
-                // ctbSheet.getCell(outputRow - 1, 3).setValue(accountName);
-                // ctbSheet.getCell(outputRow - 1, 4).setValue(amount);
-
-
-
-                // outputRow++;
                 ctbData.push([
                     entityCodeWithoutE, entityName, accountCode, accountName, amount
                 ])
@@ -110,6 +105,7 @@ function main(workbook: ExcelScript.Workbook) {
         }
     }
 
+    console.log(ctbData)
 
 
     // ---- Write buffered rows in safe chunks using getRangeByIndexes ----
@@ -147,6 +143,7 @@ function main(workbook: ExcelScript.Workbook) {
                 })
             }
         }
+        console.log(jjCodesToCbCR)
 
         const ctbValues = ctbSheet.getUsedRange().getValues()
 
