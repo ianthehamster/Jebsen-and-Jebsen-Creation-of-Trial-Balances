@@ -59,7 +59,7 @@ function main(workbook: ExcelScript.Workbook) {
         // Entity rows start after skipping one row post "LGROUP"
         for (let r = lgroupRow + 2; r < values.length; r++) {
             const cellValue = values[r][1]; // Column B
-            if (!cellValue || typeof cellValue !== "string" || !cellValue.match(/^E\d+\s*-\s*/)) continue;
+            if (!cellValue || typeof cellValue !== "string" || !cellValue.match(/^E[A-Z0-9]+\s*-\s*/)) continue;
 
             const [entityCode, entityName] = cellValue.split(" - ").map(s => s.trim());
 
@@ -70,7 +70,6 @@ function main(workbook: ExcelScript.Workbook) {
                 const accountName = accountNames[i];
                 const amount = values[r][3 + i] || 0; // amounts align under headers from column D onward
                 let accountCode: number
-
 
                 switch (accountName) {
                     case "Total Revenue":
@@ -105,7 +104,6 @@ function main(workbook: ExcelScript.Workbook) {
         }
     }
 
-    console.log(ctbData)
 
 
     // ---- Write buffered rows in safe chunks using getRangeByIndexes ----
@@ -147,10 +145,13 @@ function main(workbook: ExcelScript.Workbook) {
 
         const ctbValues = ctbSheet.getUsedRange().getValues()
 
-
+        console.log(ctbValues)
+        
 
         for (let r = 1; r < ctbValues.length; r++) {
-            const jjCode = ctbValues[r][0] ? ctbValues[r][0].toString().trim() : ""
+            // let entityCodeWithE = "E"
+            let jjCode = ctbValues[r][0] ? ctbValues[r][0].toString().trim() : ""
+            // entityCodeWithE += jjCode
 
             const mapping = jjCodesToCbCR.find(obj => obj["J&J Code"] === jjCode)
             if (mapping) {
