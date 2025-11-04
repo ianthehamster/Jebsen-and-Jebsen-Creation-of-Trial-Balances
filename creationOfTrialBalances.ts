@@ -1,5 +1,5 @@
 function main(workbook: ExcelScript.Workbook) {
-    const excludeSheetNames = ["Steps", "General", "HUB PIC", "MAS and Wise Exchange Rates", "Orbitax Entity Codes", "Sheet1", "Adjusted Trial Balance", "Trial Balance with Negative Tax Expenses"];
+    const excludeSheetNames = ["Steps", "General", "HUB PIC", "MAS and Wise Exchange Rates", "Orbitax Entity Codes", "Sheet1", "Adjusted Trial Balance", "Trial Balance with Negative Tax Expenses", "25 September Trial Balance"];
     const allSheets = workbook.getWorksheets();
 
     // Currency Conversion START
@@ -50,13 +50,6 @@ function main(workbook: ExcelScript.Workbook) {
         // console.log(currentCurrency)
         const currentCurrencyIndex: number = currencyCodes.findIndex(code => code === currentCurrency)
         const currentCurrencyExchangeRate = sgdRates[currentCurrencyIndex]
-        // console.log(typeof currentCurrencyIndex, typeof currentCurrencyExchangeRate)
-        // console.log(currentCurrencyIndex, currentCurrencyExchangeRate)
-
-
-        // if (currentCurrencyExchangeRate === undefined) {
-        //     console.log(sheet.getName())
-        // }
 
         const tbData = filteredRows.map(row => {
             const accountCode = row[1].toString();
